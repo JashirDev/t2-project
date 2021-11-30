@@ -18,4 +18,5 @@ public class SchoolData {
     private Integer teacherNumber;
 
     private Integer studentNumber;
+
 }
