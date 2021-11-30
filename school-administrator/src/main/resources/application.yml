@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: school-administrator
+  cloud:
+    url: http://loacalhost:8081
+    username: root
+    password: s3cr3t
