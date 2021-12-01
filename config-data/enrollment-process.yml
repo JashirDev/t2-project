@@ -1,0 +1,17 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    url: jdbc:sqlserver://desktop-d7vnbpc\\sqlexpress;databaseName=SchoolDb
+    username: sa
+    password: 12345
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      format-sql: true
+      dialect: org.hibernate.dialect.SQLServer2012Dialect
+      show-sql: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
