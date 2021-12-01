@@ -6,12 +6,14 @@ import com.example.schooladministrator.administrator.model.jpamodel.School;
 import com.example.schooladministrator.administrator.repository.SchoolRepository;
 import com.example.schooladministrator.administrator.util.Director;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Service
 public class AdministratorServiceImpl implements AdministratorService {
 
     private final SchoolRepository repository;

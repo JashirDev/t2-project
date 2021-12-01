@@ -16,27 +16,28 @@ public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "school_id")
     private  Long schoolId;
 
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "DirectorName")
+    @Column(name = "director_name")
     private String directorName;
 
-    @Column(name = "Direction")
+    @Column(name = "direction")
     private String direction;
 
-    @Column(name = "TeacherNumber")
+    @Column(name = "teacher_number")
     private Integer teacherNumber;
 
-    @Column(name = "StudentNumber")
+    @Column(name = "student_number")
     private Integer studentNumber;
 
-    @Column(name = "CreatedDate")
+    @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @Column(name = "LastModifiedDate")
+    @Column(name = "last_modified_date")
     private LocalDate lastModifiedDate;
 
 }
