@@ -6,7 +6,7 @@ spring:
     url: jdbc:sqlserver://localhost;databaseName=SchoolDb
     username: sa
     password: 12345
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
       database-platform: org.hibernate.dialect.SQLServer2012Dialect
