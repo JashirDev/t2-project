@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://111.11.11.11\SEGNLS:11111:databaseName=nombre
-    username: username
-    password: pass
+    url: jdbc:sqlserver://DESKTOP-D7VNBPC\\SQLEXPRESS;databaseName=SchoolDb
+    username: sa
+    password: 12345
     driverClassName: com.microsof.sqlserver.jdbc.sqlServerDriver
   jpa:
     hibernate:
