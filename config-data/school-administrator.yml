@@ -3,16 +3,15 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://DESKTOP-D7VNBPC\\SQLEXPRESS;databaseName=SchoolDb
+    url: jdbc:sqlserver://localhost;databaseName=SchoolDb
     username: sa
     password: 12345
-    driverClassName: com.microsof.sqlserver.jdbc.sqlServerDriver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
+      database-platform: org.hibernate.dialect.SQLServer2012Dialect
       format-sql: true
-      dialect: org.hibernate.dialect-SQLServer2012Dialect
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      dialect: org.hibernate.dialect.SQLServer2012Dialect
       show-sql: true
   jackson:
     serialization:
