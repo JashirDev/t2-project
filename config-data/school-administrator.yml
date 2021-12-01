@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://SQLEXPRESS;databaseName=SchoolDb
+    url: jdbc:sqlserver://localhost;databaseName=SchoolDb
     username: sa
     password: 12345
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
