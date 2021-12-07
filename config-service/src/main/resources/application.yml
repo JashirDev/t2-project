@@ -2,8 +2,11 @@ server:
   port: 8081
 
 spring:
+  application:
+    name: configserver
   cloud:
     config:
+      enabled: true
       server:
         git:
           default-label: main
@@ -12,7 +15,4 @@ spring:
           username: ${GIT_USER}
           password: ${GIT_PASSWORD}
 
-  security:
-    user:
-      name: root
-      password: s3cr3t
+
