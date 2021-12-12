@@ -1,0 +1,10 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: student-enrollment
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
