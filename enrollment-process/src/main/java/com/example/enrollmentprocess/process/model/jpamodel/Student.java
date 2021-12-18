@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Students")
+@Table(name = "students")
 public class Student {
 
     @Id
@@ -18,7 +18,7 @@ public class Student {
     @Column(name = "students_id")
     private Long studenstId;
 
-    @Column(name = "Name",nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
 
    @Column(name = "father_last_name",nullable = false)
