@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "School")
+@Table(name = "school")
 public class School {
 
     @Id
@@ -19,7 +19,7 @@ public class School {
     @Column(name = "school_id")
     private  Long schoolId;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "director_name")
