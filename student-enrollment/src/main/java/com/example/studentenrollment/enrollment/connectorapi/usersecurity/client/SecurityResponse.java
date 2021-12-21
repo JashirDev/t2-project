@@ -1,4 +1,4 @@
-package com.example.studentenrollment.enrollment.connectorapi.usersecurity;
+package com.example.studentenrollment.enrollment.connectorapi.usersecurity.client;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Response {
+public class SecurityResponse {
 
     private String code;
     private String description;

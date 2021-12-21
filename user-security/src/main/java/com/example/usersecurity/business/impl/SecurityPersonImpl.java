@@ -5,6 +5,7 @@ import com.example.usersecurity.model.Response;
 import com.example.usersecurity.reniecapi.ApiConection;
 import com.example.usersecurity.reniecapi.Conection;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityPersonImpl implements SecurityPerson {
 
     private Conection reniecapi;
@@ -19,6 +21,7 @@ public class SecurityPersonImpl implements SecurityPerson {
 
     @Override
     public Mono<Response> getPerson(String dni) {
+        log.info("inicia Consulta en RENIEC");
         return Mono.fromCallable(()-> Conection.requestDni(dni))
                 .map(s -> Objects.nonNull(s)?
                         Response.builder().code("1").description("Operacion exitosa").build():

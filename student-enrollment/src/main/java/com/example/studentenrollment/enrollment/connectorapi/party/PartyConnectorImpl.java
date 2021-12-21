@@ -25,13 +25,20 @@ public class PartyConnectorImpl implements PartyConnector{
     public Mono<PartyRequest> searchDni(StudentDataRequest request) {
         log.info("Inicia consulta de persona ");
         return apiService.searchPerson(request.getDni())
-                .doOnSuccess(partyRequest -> log.info("dato existe"+partyRequest.toString()))
+                .doOnSuccess(partyRequest -> log.info("dato existe"+partyRequest.getName()))
                 //.map(partyRequest -> Objects.nonNull(partyRequest))
                 ;
     }
 
     @Override
     public Mono<StudentDataRequest> createPerson(StudentDataRequest request) {
-        return null;
+        log.info("Inicia cracion de cliente en party");
+        return apiService.createPerson(PartyRequest.builder()
+                        .name(request.getName())
+                        .fatherName(request.getFatherLastName())
+                        .motherName(request.getMotherLastName())
+                        .dni(request.getDni())
+                .build())
+                .thenReturn(request);
     }
 }

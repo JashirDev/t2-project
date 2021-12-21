@@ -33,6 +33,7 @@ public class EnrollmentConnectorServiceImpl implements  EnrollmentConnectorServi
     @Override
     public Mono<StudentDataRequest> registerStudent(StudentDataRequest request) {
 
+        log.info("inicia la creacion del estudiante");
         return api.createStudent(builder.buildEnrollmentProcessRequest(request))
                 .thenReturn(request);
     }
