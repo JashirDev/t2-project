@@ -2,6 +2,7 @@ package com.example.studentenrollment.enrollment.business.impl;
 
 import com.example.studentenrollment.enrollment.business.EnrollmentService;
 import com.example.studentenrollment.enrollment.business.builder.EnrollmentProcessBuilder;
+import com.example.studentenrollment.enrollment.connectorapi.correspondence.CorrespondenceConnector;
 import com.example.studentenrollment.enrollment.connectorapi.document.DocumentConnector;
 import com.example.studentenrollment.enrollment.connectorapi.enrollmentprocessconector.EnrollmentConnectorService;
 import com.example.studentenrollment.enrollment.connectorapi.enrollmentprocessconector.EnrollmentProcessApi;
@@ -27,62 +28,66 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final PartyConnector partyConnector;
     private final UserSecurityConnector userSecurityConnector;
     private final DocumentConnector documentConnector;
+    private final CorrespondenceConnector correspondenceConnector;
 
 
-/*
+    /*
+        public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector, UserSecurityConnector userSecurityConnector, DocumentConnector documentConnector) {
+            this.enrollmentBuilder = enrollmentBuilder;
+            this.api = api;
+            this.enrolmentConnector = enrolmentConnector;
+            this.partyConnector = partyConnector;
+            this.userSecurityConnector = userSecurityConnector;
+            this.documentConnector = documentConnector;
+        }
 
-    public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector, UserSecurityConnector userSecurityConnector) {
-        this.enrollmentBuilder = enrollmentBuilder;
-        this.api = api;
-        this.enrolmentConnector = enrolmentConnector;
-        this.partyConnector = partyConnector;
-        this.userSecurityConnector = userSecurityConnector;
-    }
+        @Override
+        public Mono<Void> enrollStudent(StudentDataRequest request) {
+            log.info("inicia creacion de estudiante desde ms experiencia");
+            return Mono.fromCallable(()-> request)
+                    .flatMap(partyConnector::searchDni)
+                    .map(partyRequestMono -> validateResponse(partyRequestMono,request)
+                    )
+                    .flatMap(partyResult -> partyResult.getDni() == null ?
+                            userSecurityConnector.searchInReniec(request)
+                                    .flatMap(partyConnector::createPerson):
+                            Mono.fromCallable(()-> partyResult)
 
-    @Override
-    public Mono<Void> enrollStudent(StudentDataRequest request) {
-        log.info("inicia creacion de estudiante desde ms experiencia");
-        return Mono.fromCallable(()-> request)
-                .flatMap(partyConnector::searchDni)
-                .map(partyRequestMono -> validateResponse(partyRequestMono,request)
-                )
-                .flatMap(partyResult -> partyResult.getDni() == null ?
-                        userSecurityConnector.searchInReniec(request)
-                                .flatMap(partyConnector::createPerson):
-                        Mono.fromCallable(()-> partyResult)
+                    )
+                    //  .flatMap(partyConnector::createPerson)
+                       .flatMap(documentConnector::registerFiles)
+                    .flatMap(enrolmentConnector::registerStudent)
+                    .then()
+                    ;
+        }*/
 
-                        )
-              //  .flatMap(partyConnector::createPerson)
-             //   .flatMap(personsResponse -> )
-                .flatMap(enrolmentConnector::registerStudent)
-                .then()
-                ;
-    }*/
 
-    public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector, UserSecurityConnector userSecurityConnector, DocumentConnector documentConnector) {
+    @Autowired
+    public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector, UserSecurityConnector userSecurityConnector, DocumentConnector documentConnector, CorrespondenceConnector correspondenceConnector) {
         this.enrollmentBuilder = enrollmentBuilder;
         this.api = api;
         this.enrolmentConnector = enrolmentConnector;
         this.partyConnector = partyConnector;
         this.userSecurityConnector = userSecurityConnector;
         this.documentConnector = documentConnector;
+        this.correspondenceConnector = correspondenceConnector;
     }
 
     @Override
     public Mono<Void> enrollStudent(StudentDataRequest request) {
         log.info("inicia creacion de estudiante desde ms experiencia");
-        return Mono.fromCallable(()-> request)
+        return Mono.fromCallable(() -> request)
                 .flatMap(partyConnector::searchDni)
-                .map(partyRequestMono -> validateResponse(partyRequestMono,request)
+                .map(partyRequestMono -> validateResponse(partyRequestMono, request)
                 )
                 .flatMap(partyResult -> partyResult.getDni() == null ?
                         userSecurityConnector.searchInReniec(request)
-                                .flatMap(partyConnector::createPerson):
-                        Mono.fromCallable(()-> partyResult)
+                                .flatMap(partyConnector::createPerson) :
+                        Mono.fromCallable(() -> partyResult)
 
                 )
-                //  .flatMap(partyConnector::createPerson)
-                   .flatMap(documentConnector::registerFiles)
+                .flatMap(documentConnector::registerFiles)
+                .flatMap(correspondenceConnector::sendEmail)
                 .flatMap(enrolmentConnector::registerStudent)
                 .then()
                 ;
@@ -94,10 +99,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
 
-    private StudentDataRequest validateResponse(PartyRequest partyResponse, StudentDataRequest request){
-        if(partyResponse.getDni()==null){
+    private StudentDataRequest validateResponse(PartyRequest partyResponse, StudentDataRequest request) {
+        if (partyResponse.getDni() == null) {
             return StudentDataRequest.builder().build();
-        }else{
+        } else {
             return request;
         }
 

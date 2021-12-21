@@ -1,4 +1,4 @@
-package com.example.studentenrollment.enrollment.connectorapi.correspondence;
+package com.example.studentenrollment.enrollment.connectorapi.correspondence.client;
 
 import lombok.Builder;
 import lombok.Getter;
