@@ -4,6 +4,8 @@ import com.example.studentenrollment.enrollment.business.EnrollmentService;
 import com.example.studentenrollment.enrollment.business.builder.EnrollmentProcessBuilder;
 import com.example.studentenrollment.enrollment.connectorapi.enrollmentprocessconector.EnrollmentConnectorService;
 import com.example.studentenrollment.enrollment.connectorapi.enrollmentprocessconector.EnrollmentProcessApi;
+import com.example.studentenrollment.enrollment.connectorapi.party.PartyConnector;
+import com.example.studentenrollment.enrollment.connectorapi.party.client.PartyRequest;
 import com.example.studentenrollment.enrollment.model.api.StudentDataRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,21 +14,31 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Service
 @Slf4j
 public class EnrollmentServiceImpl implements EnrollmentService {
     private final EnrollmentProcessBuilder enrollmentBuilder;
     private final EnrollmentProcessApi api;
     private final EnrollmentConnectorService enrolmentConnector;
+    private final PartyConnector partyConnector;
 
-    @Autowired
+   /* @Autowired
     public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector) {
         this.enrollmentBuilder = enrollmentBuilder;
         this.api = api;
         this.enrolmentConnector = enrolmentConnector;
-    }
+    }*/
 
-   /* @Override
+    @Autowired
+    public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector) {
+        this.enrollmentBuilder = enrollmentBuilder;
+        this.api = api;
+        this.enrolmentConnector = enrolmentConnector;
+        this.partyConnector = partyConnector;
+    }
+    /* @Override
     public Mono<Void> enrollStudent(StudentDataRequest request) {
         log.info("inicia creacion de estudiante desde ms experiencia");
         return Mono.fromCallable(()-> request)
@@ -39,6 +51,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public Mono<Void> enrollStudent(StudentDataRequest request) {
     log.info("inicia creacion de estudiante desde ms experiencia");
         return Mono.fromCallable(()-> request)
+                .flatMap(partyConnector::searchDni)
+                .map(partyRequestMono -> validateResponse(partyRequestMono,request)
+                        )
                 .flatMap(enrolmentConnector::registerStudent)
                 .then()
                 ;
@@ -47,6 +62,16 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public Flux<StudentDataRequest> getAllStudents() {
         return null;
+    }
+
+
+    private StudentDataRequest validateResponse(PartyRequest partyResponse, StudentDataRequest request){
+        if(partyResponse==null){
+            return StudentDataRequest.builder().build();
+        }else{
+            return request;
+        }
+
     }
 
 }

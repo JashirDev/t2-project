@@ -1,4 +1,4 @@
-package com.example.studentenrollment.enrollment.connectorapi.party;
+package com.example.studentenrollment.enrollment.connectorapi.party.client;
 
 
 import lombok.Builder;
