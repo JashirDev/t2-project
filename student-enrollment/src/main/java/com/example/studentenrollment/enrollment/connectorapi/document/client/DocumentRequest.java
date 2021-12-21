@@ -1,4 +1,4 @@
-package com.example.studentenrollment.enrollment.connectorapi.document;
+package com.example.studentenrollment.enrollment.connectorapi.document.client;
 
 import lombok.*;
 
