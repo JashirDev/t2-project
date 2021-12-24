@@ -1,5 +1,6 @@
 package com.example.studentenrollment.enrollment.model.api;
 
+import com.example.studentenrollment.enrollment.model.DocumentData;
 import lombok.*;
 
 @Getter
@@ -20,4 +21,8 @@ public class StudentDataRequest {
     private  String dni;
 
     private  String grade;
+
+    private String email;
+
+    private DocumentData documentFile;
 }
