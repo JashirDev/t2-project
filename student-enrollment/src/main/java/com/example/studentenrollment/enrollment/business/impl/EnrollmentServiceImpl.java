@@ -31,37 +31,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final CorrespondenceConnector correspondenceConnector;
 
 
-    /*
-        public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector, UserSecurityConnector userSecurityConnector, DocumentConnector documentConnector) {
-            this.enrollmentBuilder = enrollmentBuilder;
-            this.api = api;
-            this.enrolmentConnector = enrolmentConnector;
-            this.partyConnector = partyConnector;
-            this.userSecurityConnector = userSecurityConnector;
-            this.documentConnector = documentConnector;
-        }
-
-        @Override
-        public Mono<Void> enrollStudent(StudentDataRequest request) {
-            log.info("inicia creacion de estudiante desde ms experiencia");
-            return Mono.fromCallable(()-> request)
-                    .flatMap(partyConnector::searchDni)
-                    .map(partyRequestMono -> validateResponse(partyRequestMono,request)
-                    )
-                    .flatMap(partyResult -> partyResult.getDni() == null ?
-                            userSecurityConnector.searchInReniec(request)
-                                    .flatMap(partyConnector::createPerson):
-                            Mono.fromCallable(()-> partyResult)
-
-                    )
-                    //  .flatMap(partyConnector::createPerson)
-                       .flatMap(documentConnector::registerFiles)
-                    .flatMap(enrolmentConnector::registerStudent)
-                    .then()
-                    ;
-        }*/
-
-
     @Autowired
     public EnrollmentServiceImpl(EnrollmentProcessBuilder enrollmentBuilder, EnrollmentProcessApi api, EnrollmentConnectorService enrolmentConnector, PartyConnector partyConnector, UserSecurityConnector userSecurityConnector, DocumentConnector documentConnector, CorrespondenceConnector correspondenceConnector) {
         this.enrollmentBuilder = enrollmentBuilder;

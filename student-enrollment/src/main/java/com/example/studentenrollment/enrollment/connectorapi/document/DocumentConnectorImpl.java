@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @Slf4j
 @Service
 public class DocumentConnectorImpl implements  DocumentConnector{
@@ -23,6 +26,7 @@ public class DocumentConnectorImpl implements  DocumentConnector{
     @Override
     public Mono<StudentDataRequest> registerFiles(StudentDataRequest request) {
         log.info("inicia registro de documentos");
+        Instant star = Instant.now();
         return documentApi.createStudent(DocumentRequest.builder()
                         .studentName(request.getName()+" "+request.getFatherLastName()+" "+request.getMotherLastName())
                         .dni(request.getDni())
@@ -30,6 +34,7 @@ public class DocumentConnectorImpl implements  DocumentConnector{
                         .file("pdf")
                         .documentName(request.getDocumentFile().getDocumentName())
                 .build())
-                .thenReturn(request);
+                .thenReturn(request)
+                .doFinally(signalType -> log.info("TIEMPO de DOCUMENT : " +  Duration.between(star,Instant.now()).getSeconds()));
     }
 }

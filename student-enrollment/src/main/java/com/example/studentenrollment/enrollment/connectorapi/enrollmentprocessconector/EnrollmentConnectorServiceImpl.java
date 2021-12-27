@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @Service
 @Slf4j
 public class EnrollmentConnectorServiceImpl implements  EnrollmentConnectorService{
@@ -24,17 +27,14 @@ public class EnrollmentConnectorServiceImpl implements  EnrollmentConnectorServi
         this.builder = builder;
     }
 
-   /* @Override
-    public Mono<Void> registerStudent(StudentDataRequest request) {
-
-        return api.createStudent(builder.buildEnrollmentProcessRequest(request));
-    }*/
 
     @Override
     public Mono<StudentDataRequest> registerStudent(StudentDataRequest request) {
 
         log.info("inicia la creacion del estudiante");
+        Instant star= Instant.now();
         return api.createStudent(builder.buildEnrollmentProcessRequest(request))
-                .thenReturn(request);
+                .thenReturn(request)
+                .doFinally(signalType -> log.info("TIEMPO de ENROOLEMTN : " + Duration.between(star,Instant.now()).getSeconds()));
     }
 }

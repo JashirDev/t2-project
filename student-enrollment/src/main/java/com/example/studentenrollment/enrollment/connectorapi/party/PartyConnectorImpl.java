@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 
 @Service
@@ -33,12 +35,14 @@ public class PartyConnectorImpl implements PartyConnector{
     @Override
     public Mono<StudentDataRequest> createPerson(StudentDataRequest request) {
         log.info("Inicia cracion de cliente en party");
+        Instant star = Instant.now();
         return apiService.createPerson(PartyRequest.builder()
                         .name(request.getName())
                         .fatherName(request.getFatherLastName())
                         .motherName(request.getMotherLastName())
                         .dni(request.getDni())
                 .build())
-                .thenReturn(request);
+                .thenReturn(request)
+                .doFinally(signalType -> log.info("TIEMPO de PARTY : " + Duration.between(star,Instant.now()).getSeconds()));
     }
 }

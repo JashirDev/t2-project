@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @Service
 @Slf4j
 public class MailServiceImpl implements MailService {
@@ -19,19 +22,15 @@ public class MailServiceImpl implements MailService {
     @Override
     public Mono<Response> sendMail(MailRequest request) {
         log.info("inicia envio de correo");
+        Instant star= Instant.now();
         return Mono.fromCallable(()-> request)
-                //.map(mailRq -> sendEmail(mailRq))
                 .map(request1 -> {
 
                     mailService.sendEmail(request1.getTo(),request1.getSubject(),request1.getText());
                     return Response.builder().message("Operacion exitosa").build();
                 })
-                .doOnError(throwable -> Response.builder().message("Operacion fallida").build());
+                .doOnError(throwable -> Response.builder().message("Operacion fallida").build())
+                .doFinally(signalType -> log.info("TIEMPO DE CORREO "+Duration.between(star,Instant.now()).getSeconds()));
     }
 
-  /*  public Response sendEmail(MailRequest request){
-        mailService= new MyMailService();
-        mailService.sendEmail(request.getTo(),request.getSubject(),request.getText());
-        return Response.builder().message("Operacion exitosa").build();
-    }*/
 }

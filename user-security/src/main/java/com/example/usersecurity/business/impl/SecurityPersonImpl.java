@@ -29,14 +29,4 @@ public class SecurityPersonImpl implements SecurityPerson {
                         );
     }
 
-    /*private  final ApiConection reniecApi;
-
-    @Override
-    public Mono<Response> getPerson(String dni) {
-        return Mono.fromCallable(()-> reniecApi.findByDni(dni))
-                .map(person -> person.isPresent()?
-                                Response.builder().code("1").description("Operacion exitosa").build():
-                                Response.builder().code("2").description("Operacion fallida").build()
-                        );
-    }*/
 }

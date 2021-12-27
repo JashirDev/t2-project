@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @Service
 @Slf4j
 public class UserSecurityConnectorImpl implements  UserSecurityConnector{
@@ -22,9 +25,10 @@ public class UserSecurityConnectorImpl implements  UserSecurityConnector{
     @Override
     public Mono<StudentDataRequest> searchInReniec(StudentDataRequest request) {
         log.info("inicia consulta a RENIEC");
+        Instant star= Instant.now();
         return apiService.getConsult(request.getDni())
                 .map(securityResponse -> request)
                 .doOnSuccess(request1 -> log.info("finaliza conuslta de reinec"))
-                ;
+                .doFinally(signalType -> log.info("TIEMPO de USER SECURITY : " + Duration.between(star,Instant.now()).getSeconds()));
     }
 }

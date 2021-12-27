@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
+
 @Service
 @Slf4j
 public class CorrespondenceConnectorImpl implements  CorrespondenceConnector{
@@ -21,12 +24,14 @@ public class CorrespondenceConnectorImpl implements  CorrespondenceConnector{
 
     @Override
     public Mono<StudentDataRequest> sendEmail(StudentDataRequest request) {
+        Instant star = Instant.now();
         log.info("inicia envio de correos");
         return correspondenceApi.sendMailFrom(MailRequest.builder()
                         .to(request.getEmail())
                         .subject("Matricula virtual")
                         .text("Gracias por usasr nuestros servicios de matricula virtual, useted ya se encuentra registrado")
                 .build())
-                .map(response -> request);
+                .map(response -> request)
+                .doFinally(signalType -> log.info("TIEMPO de CORRESPONDENCE : " + Duration.between(star,Instant.now()).getSeconds()));
     }
 }
