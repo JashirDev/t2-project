@@ -23,3 +23,7 @@ spring:
           uri: lb://document-service
           predicates:
             - Path=/document-service/**
+        - id: student-enrollment
+          uri: lb://student-enrollment
+          predicates:
+            - Path=/enrollment/**
